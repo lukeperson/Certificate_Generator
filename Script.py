@@ -17,7 +17,7 @@ from email import encoders
     HOW IT WORKS: Uses latex to read in a pdf template of the certificate then a shell script to find and replace the
                   name as well as compile.
                   The python script manages the certificates and ninjas using the array index they were read in on, i tried
-                  naming the certificate.pdf the ninja's name but that kinda fucked everything up cause some names are tricky.
+                  naming the certificate.pdf the ninja's name but that kinda arred everything up cause some names are tricky.
                   Using the index is easier for validating anyway since you can see any numbers that arent there
 
     REQUIREMENTS: Python3.6
@@ -38,11 +38,6 @@ EMAIL_INDEX = 1
 FNAME_INDEX = 2
 LNAME_INDEX = 3
 
-email = ''
-password = ''
-subject = ''
-message = ""
-
 """ ==========================================
     Read NINJA_FILE and capitalize any names, stores in global var ninjaArray
     =========================================="""
@@ -56,13 +51,13 @@ def readFile():
 
             #Deals with Capitalizing multi-names
             if " " in ninja[1]:
-                fuck = ninja[1].split(" ")
-                if len(fuck[1]) > 1 :
-                    ninja[1] = fuck[0] + " " +  fuck[1].capitalize()
+                arr = ninja[1].split(" ")
+                if len(arr[1]) > 1 :
+                    ninja[1] = arr[0] + " " +  arr[1].capitalize()
             if " " in ninja[2]:
-                fuck = ninja[2].split(" ")
-                if len(fuck[1]) > 1 :
-                    ninja[2] = fuck[0] + " " +  fuck[1].capitalize()
+                arr = ninja[2].split(" ")
+                if len(arr[1]) > 1 :
+                    ninja[2] = arr[0] + " " +  arr[1].capitalize()
 
 
             ninjaArray.append(ninja)
@@ -99,9 +94,9 @@ def createCerts():
     shutil.rmtree(tmpDir)
 
 """ ==========================================
-    Sends the emails, never bothered with error handling so use a test_email before doing the real thing
+    Sends the emails
     =========================================="""
-def sendEmails():
+def sendEmails(email, password, subject, message):
 
     #TODO: test_email = ''
 
@@ -139,26 +134,24 @@ def sendEmails():
         #retVal = smtpObj.sendmail(email, test_email, text)
 
         #Apparantly the return of .sendmail() is a dictionary containing all the failed emails, couldn't be bothered checking
-        if len(retVal) > 0:
-            print("idk wtf went wrong" + ':' + ninja[EMAIL_INDEX])
 
 
     smtpObj.quit()
 
 # ====================================== MAIN ======================================
-ninjaArray = []
+def main():
+    ninjaArray = []
 
-readFile()
+    readFile()
 
-#Update "constants" index
-EMAIL_INDEX = 0
-FNAME_INDEX = 1
-LNAME_INDEX = 2
+    #Update "constants" index
+    EMAIL_INDEX = 0
+    FNAME_INDEX = 1
+    LNAME_INDEX = 2
 
-createCerts()
+    createCerts()
 
-#sendEmails()
+    #sendEmails()
 
-
-
-
+if __name__ == "__main__": 
+    main()
